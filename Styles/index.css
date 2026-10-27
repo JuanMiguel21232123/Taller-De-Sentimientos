@@ -107,3 +107,16 @@ footer p{margin-bottom:1.5rem}
 .foot-info{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;margin-top:1.5rem}
 .foot-info:empty{display:none}
 .foot-info a{color:#fff}
+
+/* Nombre largo de la tienda: en el celular el logo ocupa su propia fila */
+@media(max-width:640px){.top{flex-wrap:wrap;gap:.3rem 1rem}.logo{flex:1 1 100%;font-size:1.5rem}.top nav{margin-left:0;flex:1}}
+
+/* Separador entre la portada y el catálogo: cinta horizontal con corazón */
+.divider{position:relative;height:18px;background:linear-gradient(180deg,var(--ribbon) 0 35%,var(--sheen) 35% 65%,var(--ribbon) 65%)}
+.divider span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:var(--paper);border:3px solid var(--ribbon);color:var(--ribbon);display:grid;place-items:center;font-size:1.4rem;line-height:1}
+
+/* Acceso al panel: discreto, al final del pie de página */
+.foot-bottom{margin-top:2.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.18);text-align:right}
+.foot-bottom a{color:#fff;opacity:.45;font-size:.8rem;text-decoration:none}
+.foot-bottom a:hover,.foot-bottom a:focus-visible{opacity:1;text-decoration:underline}
+.foot-bottom a:focus-visible{outline-color:#fff}

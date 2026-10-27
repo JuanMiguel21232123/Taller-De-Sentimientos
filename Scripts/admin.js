@@ -449,7 +449,7 @@ $('#orderList').addEventListener('click', async e => {
 
 // ---------- Personalización de la página ----------
 const SITE_DEFAULTS = {
-  store_name: 'Lazo', whatsapp: '573000000000',
+  store_name: 'Taller De Sentimientos', whatsapp: '573000000000',
   hero_title: 'Regalos que dicen lo que no sabes decir.',
   hero_text: 'Cajas sorpresa, desayunos, flores y detalles para cumpleaños, aniversarios y cualquier día que valga la pena celebrar.',
   hero_tag: 'Pedidos\npor WhatsApp',
