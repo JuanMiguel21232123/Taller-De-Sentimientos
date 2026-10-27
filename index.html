@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lazo — Tienda de regalos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Instrument+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Styles/index.css">
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="#">Lazo</a>
+  <nav>
+    <a href="#catalogo">Catálogo</a>
+    <a href="#contacto">Contacto</a>
+    <a href="admin.html">Administrar</a>
+  </nav>
+  <button id="cartBtn" class="cart-btn" aria-label="Abrir carrito">Carrito <span id="cartCount">0</span></button>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>Regalos que dicen lo que no sabes decir.</h1>
+    <p>Cajas sorpresa, desayunos, flores y detalles para cumpleaños, aniversarios y cualquier día que valga la pena celebrar.</p>
+    <a class="btn" href="#catalogo">Ver el catálogo</a>
+  </div>
+  <div class="hero-tag">Pedidos<br>por WhatsApp</div>
+</section>
+
+<section id="catalogo" class="wrap">
+  <h2>Elige tu regalo</h2>
+  <div id="filters" class="filters"></div>
+  <div id="grid" class="grid"></div>
+</section>
+
+<section id="como" class="wrap" hidden>
+  <h2>Cómo funciona</h2>
+  <ol id="howList" class="how-list"></ol>
+</section>
+
+<section id="faq" class="wrap" hidden>
+  <h2>Preguntas frecuentes</h2>
+  <div id="faqList" class="faq"></div>
+</section>
+
+<footer id="contacto">
+  <h2>¿Algo a tu medida?</h2>
+  <p>Escríbenos y armamos el regalo con lo que necesites.</p>
+  <a class="btn light" href="https://wa.me/573000000000">Escribir por WhatsApp</a>
+  <div id="footInfo" class="foot-info"></div>
+</footer>
+
+<aside id="cart" class="cart" aria-label="Carrito de compras">
+  <div class="cart-head"><h3 id="cartTitle">Tu carrito</h3><button id="closeCart" aria-label="Cerrar carrito">✕</button></div>
+
+  <div id="cartView" class="cart-body">
+    <ul id="cartItems"></ul>
+    <div class="cart-foot">
+      <p>Subtotal <b id="cartTotal">$0</b></p>
+      <button id="toOrder" class="btn" disabled>Continuar con el pedido</button>
+    </div>
+  </div>
+
+  <form id="orderForm" class="cart-body" hidden>
+    <div class="form-scroll">
+      <h4>Tus datos</h4>
+      <label>Tu nombre<input name="customer_name" required maxlength="60" autocomplete="name"></label>
+      <label>Tu WhatsApp<input name="customer_phone" type="tel" required maxlength="20" autocomplete="tel"></label>
+      <h4>Para quién es el regalo</h4>
+      <label>Nombre de quien lo recibe<input name="recipient_name" required maxlength="60"></label>
+      <label>Teléfono de quien lo recibe (opcional)<input name="recipient_phone" type="tel" maxlength="20"></label>
+      <label>Dirección de entrega<input name="address" required maxlength="140" placeholder="Barrio, calle, apartamento…"></label>
+      <div class="two">
+        <label>Fecha de entrega<input name="delivery_date" type="date" required></label>
+        <label>Horario<select name="delivery_time">
+          <option>Mañana (8 a. m. a 12 m.)</option>
+          <option>Tarde (12 m. a 6 p. m.)</option>
+          <option>Noche (6 a 9 p. m.)</option>
+        </select></label>
+      </div>
+      <label>Dedicatoria para la tarjeta (opcional)<textarea name="dedication" rows="3" maxlength="200"></textarea></label>
+      <label class="check"><input type="checkbox" name="anonymous"> Enviar sin mi nombre (sorpresa)</label>
+      <label>Indicaciones adicionales (opcional)<input name="notes" maxlength="140" placeholder="Portería, punto de referencia…"></label>
+    </div>
+    <p id="orderMsg" class="form-msg" role="alert" hidden></p>
+    <div class="cart-foot">
+      <p>Productos <b id="orderTotal">$0</b></p>
+      <small>El domicilio se confirma por WhatsApp.</small>
+      <button type="submit" class="btn" id="orderBtn">Enviar pedido por WhatsApp</button>
+      <button type="button" class="link" id="backCart">Volver al carrito</button>
+    </div>
+  </form>
+
+  <div id="doneView" class="cart-body" hidden>
+    <div class="form-scroll">
+      <h4>¡Pedido registrado!</h4>
+      <p id="doneText"></p>
+    </div>
+    <div class="cart-foot">
+      <a id="waBtn" class="btn" target="_blank" rel="noopener">Abrir WhatsApp</a>
+      <button type="button" class="link" id="doneClose">Seguir comprando</button>
+    </div>
+  </div>
+</aside>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="Scripts/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administrar catálogo — Lazo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&family=Instrument+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Styles/admin.css">
+</head>
+<body>
+<header class="bar">
+  <h1>Catálogo <small id="count" hidden></small></h1>
+  <div class="bar-right">
+    <span id="who"></span>
+    <a href="index.html">Ver la tienda</a>
+    <button id="logout" type="button" hidden>Cerrar sesión</button>
+  </div>
+</header>
+
+<section id="login" class="panel login" hidden>
+  <h2>Ingresar al panel</h2>
+  <form id="loginForm">
+    <label>Correo<input id="email" type="email" autocomplete="username" required></label>
+    <label>Contraseña<input id="password" type="password" autocomplete="current-password" required></label>
+    <button class="primary" type="submit" id="loginBtn">Ingresar</button>
+  </form>
+</section>
+
+<p id="msg" class="msg" role="status" hidden></p>
+
+<div id="app" hidden>
+<nav class="tabs">
+  <button type="button" data-tab="productos" class="on">Productos</button>
+  <button type="button" data-tab="ingresos">Ingresos</button>
+  <button type="button" data-tab="pedidos">Pedidos<span id="newBadge"></span></button>
+  <button type="button" data-tab="pagina">Página</button>
+</nav>
+<p id="stockAlert" class="msg stock" role="status" hidden></p>
+
+<main id="tab-productos">
+  <form id="form" class="panel">
+    <h2 id="formTitle">Nuevo producto</h2>
+    <label>Nombre<input id="name" required maxlength="60"></label>
+    <label>Precio (COP)<input id="price" type="number" min="0" step="500" required></label>
+    <label>Categoría<input id="category" list="cats" required maxlength="30"></label>
+    <datalist id="cats"></datalist>
+    <label>Ingresa la imagen del producto<input id="pic" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+    <div id="preview" class="preview" hidden></div>
+    <p id="picHint" class="hint">JPG, PNG o WebP, máximo 3 MB.</p>
+    <label>Descripción<textarea id="desc" rows="3" maxlength="140"></textarea></label>
+    <label>Stock disponible<input id="stock" type="number" min="0" placeholder="Vacío = sin control de stock"></label>
+    <label class="check"><input id="visible" type="checkbox" checked> Visible en la tienda</label>
+    <div class="actions">
+      <button class="primary" type="submit" id="saveBtn">Guardar producto</button>
+      <button type="button" id="cancelBtn" hidden>Cancelar edición</button>
+    </div>
+  </form>
+
+  <section class="panel">
+    <h2>Productos publicados</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th></th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<section id="tab-ingresos" class="income" hidden>
+  <form id="saleForm" class="panel">
+    <h2>Registrar venta</h2>
+    <label>Fecha<input id="saleDate" type="date" required></label>
+    <label>Producto<select id="saleProduct"></select></label>
+    <label id="saleCustomWrap" hidden>Nombre del producto<input id="saleCustom" maxlength="60"></label>
+    <label>Cantidad<input id="saleQty" type="number" min="1" value="1" required></label>
+    <label>Valor total (COP)<input id="saleAmount" type="number" min="0" step="500" required></label>
+    <label>Nota (opcional)<input id="saleNote" maxlength="80" placeholder="Cliente, domicilio, etc."></label>
+    <button class="primary" type="submit" id="saleBtn">Registrar venta</button>
+  </form>
+
+  <div class="stack">
+    <div class="panel">
+      <div class="seg" id="seg">
+        <button type="button" data-p="day" class="on">Diario</button>
+        <button type="button" data-p="week">Semanal</button>
+        <button type="button" data-p="fortnight">Quincenal</button>
+        <button type="button" data-p="month">Mensual</button>
+      </div>
+      <div id="kpis" class="kpis"></div>
+    </div>
+    <div class="panel">
+      <h2 id="chartTitle">Ingresos</h2>
+      <div id="bars" class="bars"></div>
+    </div>
+    <div class="panel">
+      <h2>Detalle por periodo</h2>
+      <div class="scroll"><table><thead><tr><th>Periodo</th><th>Ventas</th><th>Ingresos</th></tr></thead><tbody id="periodRows"></tbody></table></div>
+    </div>
+    <div class="panel">
+      <h2>Últimas ventas registradas</h2>
+      <div class="scroll"><table><thead><tr><th>Fecha</th><th>Producto</th><th>Cant.</th><th>Valor</th><th></th></tr></thead><tbody id="saleRows"></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<section id="tab-pedidos" class="orders" hidden>
+  <div class="seg" id="ofilter"></div>
+  <div id="orderList" class="olist"></div>
+</section>
+
+<section id="tab-pagina" class="site" hidden>
+  <form id="siteForm" class="panel">
+    <h2>Personalizar la tienda</h2>
+    <p class="hint">Los cambios se ven en la tienda al guardar. Si dejas un texto vacío, se usa el original.</p>
+    <fieldset>
+      <legend>Marca y contacto</legend>
+      <label>Nombre de la tienda<input id="s_store_name" maxlength="30" required></label>
+      <label>WhatsApp con indicativo de país<input id="s_whatsapp" type="tel" maxlength="20" required placeholder="573001234567"></label>
+    </fieldset>
+    <fieldset>
+      <legend>Portada</legend>
+      <label>Título<input id="s_hero_title" maxlength="90"></label>
+      <label>Texto<textarea id="s_hero_text" rows="3" maxlength="200"></textarea></label>
+      <label>Etiqueta amarilla (Enter = salto de línea)<textarea id="s_hero_tag" rows="2" maxlength="40"></textarea></label>
+    </fieldset>
+    <fieldset>
+      <legend>Pie de página</legend>
+      <label>Título<input id="s_footer_title" maxlength="60"></label>
+      <label>Texto<textarea id="s_footer_text" rows="2" maxlength="140"></textarea></label>
+    </fieldset>
+    <fieldset>
+      <legend>Cómo funciona y preguntas frecuentes</legend>
+      <label>Pasos (una línea por paso: Título | Texto)<textarea id="s_how_text" rows="5" maxlength="900"></textarea></label>
+      <label>Preguntas (una línea por pregunta: Pregunta | Respuesta)<textarea id="s_faq_text" rows="8" maxlength="2500"></textarea></label>
+    </fieldset>
+    <fieldset>
+      <legend>Instagram y ubicación</legend>
+      <label>Instagram (usuario o enlace)<input id="s_instagram" maxlength="80" placeholder="@tutienda"></label>
+      <label>Ubicación o zona de cobertura<input id="s_location_text" maxlength="100" placeholder="Manizales, Caldas"></label>
+      <label>Enlace del mapa (opcional)<input id="s_location_url" type="url" maxlength="300" placeholder="https://maps.app.goo.gl/..."></label>
+    </fieldset>
+    <fieldset>
+      <legend>Pedidos y stock</legend>
+      <label>Máximo de pedidos por día de entrega<input id="s_max_orders_per_day" type="number" min="0" max="999" placeholder="Vacío = sin límite"></label>
+      <label>Avisar de stock bajo (unidades o menos)<input id="s_low_stock" type="number" min="0" max="999" required></label>
+      <p class="hint">El límite cuenta los pedidos por fecha de entrega, sin los cancelados. Al llegar al tope, la tienda pide elegir otro día.</p>
+    </fieldset>
+    <fieldset>
+      <legend>Colores</legend>
+      <div class="colors">
+        <label>Principal (botones y cinta)<input id="s_color_ribbon" type="color"></label>
+        <label>Textos y fondos oscuros<input id="s_color_ink" type="color"></label>
+        <label>Acento amarillo<input id="s_color_sun" type="color"></label>
+        <label>Fondo de la página<input id="s_color_paper" type="color"></label>
+      </div>
+      <p class="hint">Elige colores con buen contraste para que los textos se lean bien.</p>
+    </fieldset>
+    <div class="actions">
+      <button class="primary" type="submit" id="siteBtn">Guardar cambios</button>
+      <button type="button" id="siteReset">Restablecer textos y colores</button>
+    </div>
+  </form>
+</section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="Scripts/admin.js"></script>
+</body>
+</html>
